@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
+using WineRoomAPI.Models;
 using WineRoomAPI.Services;
 
 namespace WineRoomAPI.Controllers
@@ -31,16 +32,17 @@ namespace WineRoomAPI.Controllers
 
         //create wine
         [System.Web.Http.HttpPut]
-        public IHttpActionResult AddWine(FormCollection collection)
+        public IHttpActionResult AddWine(Wine wine)
         {
-            wineServices.AddWine(collection);
+            wineServices.AddWine(wine);
             return Ok("New wine successfully added to the collection.");
         }
 
         //update wine
         [System.Web.Http.HttpPost]
-        public IHttpActionResult EditWine(int id)
+        public IHttpActionResult EditWine(Wine wine)
         {
+            wineServices.EditWine(wine);
             return Ok("The wine was successfully updated.");
         }
 

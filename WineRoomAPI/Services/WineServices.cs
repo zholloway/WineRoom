@@ -64,7 +64,7 @@ namespace WineRoomAPI.Services
             Connection.Close();
         }
 
-        public void AddWine(FormCollection collection)
+        public void AddWine(Wine wine)
         {
             var query = "INSERT INTO Wine (OwnerID, NumberOfBottles, Format, " +
                 "Year, GrapeType, Vineyard, DateAdded, Location, DrinkableStart, " +
@@ -75,31 +75,69 @@ namespace WineRoomAPI.Services
                 "@PurchasePrice, @MarketPrice, @Favorite, @Region, @Color, @Tags)";
 
             var cmd = new SqlCommand(query, Connection);
-            cmd.Parameters.AddWithValue("@OwnerID", collection["OwnerID"]);
-            cmd.Parameters.AddWithValue("@NumberOfBottles", collection["NumberOfBottles"]);
-            cmd.Parameters.AddWithValue("@Format", collection["Format"]);
-            cmd.Parameters.AddWithValue("@Year", collection["Year"]);
-            cmd.Parameters.AddWithValue("@GrapeType", collection["GrapeType"]);
-            cmd.Parameters.AddWithValue("@Vineyard", collection["Vineyard"]);
-            cmd.Parameters.AddWithValue("@DateAdded",DateTime.Now);
-            cmd.Parameters.AddWithValue("@Location", collection["Location"]);
-            cmd.Parameters.AddWithValue("@DrinkableStart", collection["DrinkableStart"]);
-            cmd.Parameters.AddWithValue("@DrinkableEnd", collection["DrinkableEnd"]);
-            cmd.Parameters.AddWithValue("@PurchasePrice", collection["PurchasePrice"]);
-            cmd.Parameters.AddWithValue("@MarketPrice", collection["MarketPrice"]);
-            cmd.Parameters.AddWithValue("@Favorite", collection["Favorite"]);
-            cmd.Parameters.AddWithValue("@Region", collection["Region"]);
-            cmd.Parameters.AddWithValue("@Color", collection["Color"]);
-            cmd.Parameters.AddWithValue("@Tags", collection["Tags"]);
+            cmd.Parameters.AddWithValue("@OwnerID", wine.ID);
+            cmd.Parameters.AddWithValue("@NumberOfBottles", wine.NumberOfBottles);
+            cmd.Parameters.AddWithValue("@Format", wine.Format);
+            cmd.Parameters.AddWithValue("@Year", wine.Year);
+            cmd.Parameters.AddWithValue("@GrapeType", wine.GrapeType);
+            cmd.Parameters.AddWithValue("@Vineyard", wine.Vineyard);
+            cmd.Parameters.AddWithValue("@DateAdded", DateTime.Now);
+            cmd.Parameters.AddWithValue("@Location", wine.Location);
+            cmd.Parameters.AddWithValue("@DrinkableStart", wine.DrinkableStart);
+            cmd.Parameters.AddWithValue("@DrinkableEnd", wine.DrinkableEnd);
+            cmd.Parameters.AddWithValue("@PurchasePrice", wine.PurchasePrice);
+            cmd.Parameters.AddWithValue("@MarketPrice", wine.MarketPrice);
+            cmd.Parameters.AddWithValue("@Favorite", wine.Favorite);
+            cmd.Parameters.AddWithValue("@Region", wine.Region);
+            cmd.Parameters.AddWithValue("@Color", wine.Color);
+            cmd.Parameters.AddWithValue("@Tags", wine.Tags);
 
             Connection.Open();
             cmd.ExecuteNonQuery();
             Connection.Close();
         }
 
-        public void EditWine(int id)
+        public void EditWine(Wine wine)
         {
-            var query = "UPDATE Book SET []";
+            var query = "UPDATE Book SET [OwnerID] = @OwnerID," +
+                        ",[NumberOfBottles] = @NumberOfBottles" +
+                        ",[Format] = @Format" +
+                        ",[Year] = @Year" +
+                        ",[GrapeType] = @GrapeType" +
+                        ",[Vineyard] = @Vineyard" +
+                        ",[DateAdded] = @DateAdded" +
+                        ",[Location] = @Location" +
+                        ",[DrinkableStart] = @DrinkableStart" +
+                        ",[DrinkableEnd] = @DrinkableEnd" +
+                        ",[PurchasePrice] = @PurchasePrice" +
+                        ",[MarketPrice] = @MarketPrice" +
+                        ",[Favorite] = @Favorite" +
+                        ",[Region] = @Region" +
+                        ",[Color] = @Color" +
+                        ",[Tags] = @Tags " +
+                        "WHERE ID=@ID";
+
+            var cmd = new SqlCommand(query, Connection);
+            cmd.Parameters.AddWithValue("@OwnerID", wine.ID);
+            cmd.Parameters.AddWithValue("@NumberOfBottles", wine.NumberOfBottles);
+            cmd.Parameters.AddWithValue("@Format", wine.Format);
+            cmd.Parameters.AddWithValue("@Year", wine.Year);
+            cmd.Parameters.AddWithValue("@GrapeType", wine.GrapeType);
+            cmd.Parameters.AddWithValue("@Vineyard", wine.Vineyard);
+            cmd.Parameters.AddWithValue("@DateAdded", wine.DateAdded);
+            cmd.Parameters.AddWithValue("@Location", wine.Location);
+            cmd.Parameters.AddWithValue("@DrinkableStart", wine.DrinkableStart);
+            cmd.Parameters.AddWithValue("@PurchasePrice", wine.PurchasePrice);
+            cmd.Parameters.AddWithValue("@MarketPrice", wine.MarketPrice);
+            cmd.Parameters.AddWithValue("@Favorite", wine.Favorite);
+            cmd.Parameters.AddWithValue("@Region", wine.Region);
+            cmd.Parameters.AddWithValue("@Color", wine.Color);
+            cmd.Parameters.AddWithValue("@Tags", wine.Tags);
+            cmd.Parameters.AddWithValue("@ID", wine.ID);
+
+            Connection.Open();
+            cmd.ExecuteNonQuery();
+            Connection.Close();
         }
     }
 }
