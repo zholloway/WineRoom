@@ -192,9 +192,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201704210212457_new database.cs" />
-    <Compile Include="Migrations\201704210212457_new database.Designer.cs">
-      <DependentUpon>201704210212457_new database.cs</DependentUpon>
+    <Compile Include="Migrations\201704210248012_real database.cs" />
+    <Compile Include="Migrations\201704210248012_real database.Designer.cs">
+      <DependentUpon>201704210248012_real database.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DrankWine.cs" />
@@ -238,6 +238,8 @@
     </Content>
     <None Include="Properties\PublishProfiles\wineroom - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\wineroom - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\wineroomonline - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\wineroomonline - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -278,8 +280,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201704210212457_new database.resx">
-      <DependentUpon>201704210212457_new database.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201704210248012_real database.resx">
+      <DependentUpon>201704210248012_real database.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

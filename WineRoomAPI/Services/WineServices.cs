@@ -37,14 +37,6 @@ namespace WineRoomAPI.Services
                 {
                      rv = rv.Where(w => w.Color == filter.Color);
                 }
-                if (filter.Year != null)
-                {
-                    rv = rv.Where(w => w.Year == filter.Year);
-                }
-                if(filter.DateAdded != null)
-                {
-                    rv = rv.Where(w => w.DateAdded == filter.DateAdded);
-                }
                 if (filter.DrinkableEnd != null)
                 {
                     rv = rv.Where(w => w.DrinkableEnd == filter.DrinkableEnd);
@@ -57,29 +49,9 @@ namespace WineRoomAPI.Services
                 {
                     rv = rv.Where(w => w.Favorite == filter.Favorite);
                 }
-                if (filter.Format != null)
-                {
-                    rv = rv.Where(w => w.Format == filter.Format);
-                }
-                if (filter.GrapeType != null)
-                {
-                    rv = rv.Where(w => w.GrapeType == filter.GrapeType);
-                }
-                if (filter.ID != null)
-                {
-                    rv = rv.Where(w => w.ID == filter.ID);
-                }
-                if (filter.Location != null)
-                {
-                    rv = rv.Where(w => w.Location == filter.Location);
-                }
                 if (filter.MarketPrice != null)
                 {
-                    rv = rv.Where(w => w.MarketPrice == 10);
-                }
-                if (filter.NumberOfBottles != null)
-                {
-                    rv = rv.Where(w => w.NumberOfBottles == filter.NumberOfBottles);
+                    rv = rv.Where(w => w.MarketPrice <= filter.MarketPrice.MaximumPrice && w.MarketPrice >= filter.MarketPrice.MaximumPrice);
                 }
                 if (filter.PurchasePrice != null)
                 {
@@ -92,14 +64,6 @@ namespace WineRoomAPI.Services
                 if (filter.Tags != null)
                 {
                     rv = rv.Where(w => w.Tags == filter.Tags);
-                }
-                if(filter.UserID != null)
-                {
-                    rv = rv.Where(w => w.UserID == filter.UserID);
-                }
-                if (filter.Vineyard != null)
-                {
-                    rv = rv.Where(w => w.Vineyard == filter.Vineyard);
                 }
 
                 return rv.ToList();

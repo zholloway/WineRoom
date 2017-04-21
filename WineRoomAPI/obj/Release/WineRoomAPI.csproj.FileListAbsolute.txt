@@ -71,3 +71,10 @@ c:\users\zack holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoo
 c:\users\zack holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\obj\Release\WineRoomAPI.csprojResolveAssemblyReference.cache
 c:\users\zack holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\obj\Release\WineRoomAPI.dll
 c:\users\zack holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\obj\Release\WineRoomAPI.pdb
+C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\obj\Release\WineRoomAPI.csproj.GenerateResource.Cache
+C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\bin\EntityFramework.dll
+C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\bin\EntityFramework.SqlServer.dll
+C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\bin\System.Linq.Dynamic.dll
+C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\bin\EntityFramework.xml
+C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\bin\EntityFramework.SqlServer.xml
+C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\obj\Release\WineRoomAPI.Migrations.realdatabase.resources

@@ -9,14 +9,6 @@ namespace WineRoomAPI.Services
 {
     public class FilterParameters
     {
-        public int ID { get; set; }
-        public int NumberOfBottles { get; set; }
-        public string Format { get; set; }
-        public int Year { get; set; }
-        public string GrapeType { get; set; }
-        public string Vineyard { get; set; }
-        public string DateAdded { get; set; }
-        public string Location { get; set; }
         public string DrinkableStart { get; set; }
         public string DrinkableEnd { get; set; }
         public decimal PurchasePrice { get; set; }
@@ -25,6 +17,5 @@ namespace WineRoomAPI.Services
         public string Region { get; set; }
         public string Color { get; set; }
         public string Tags { get; set; }
-        public int UserID { get; set; }
     }
 }

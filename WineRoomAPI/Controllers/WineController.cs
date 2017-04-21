@@ -19,7 +19,7 @@ namespace WineRoomAPI.Controllers
 
         //get wine
         [HttpGet]
-        public IHttpActionResult Get(int pageIndex = 1, int pageSize = 10, string sortBy = "ID", string search = "", FilterParameters filter = null)
+        public IHttpActionResult Get(FilterParameters filter, int pageIndex = 1, int pageSize = 10, string sortBy = "ID", string search = "")
         {
             return Ok(wineServices.GetAllWine(pageIndex, pageSize, sortBy, search, filter));
         }
