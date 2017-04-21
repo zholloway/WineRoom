@@ -19,9 +19,94 @@ namespace WineRoomAPI.Services
             Database = database;
         }
 
-        public List<Wine> GetAllWine(int pageIndex, int pageSize, string sortBy, string search)
+        public List<Wine> GetAllWine(int pageIndex, int pageSize, string sortBy, string search, FilterParameters filter)
         {
-            var list = Database.Wines
+            
+            if (filter != null)
+            {
+                var rv = Database.Wines
+                       .Where(w => w.Vineyard.Contains(search)
+                                || w.GrapeType.Contains(search)
+                                || w.Year.ToString().Contains(search))
+                       .OrderBy(sortBy)
+                       .Skip((pageIndex - 1) * pageSize)
+                       .Take(pageSize)
+                       .AsQueryable();
+
+                if (filter.Color != null)
+                {
+                     rv = rv.Where(w => w.Color == filter.Color);
+                }
+                if (filter.Year != null)
+                {
+                    rv = rv.Where(w => w.Year == filter.Year);
+                }
+                if(filter.DateAdded != null)
+                {
+                    rv = rv.Where(w => w.DateAdded == filter.DateAdded);
+                }
+                if (filter.DrinkableEnd != null)
+                {
+                    rv = rv.Where(w => w.DrinkableEnd == filter.DrinkableEnd);
+                }
+                if (filter.DrinkableStart != null)
+                {
+                    rv = rv.Where(w => w.DrinkableStart == filter.DrinkableStart);
+                }
+                if (filter.Favorite != null)
+                {
+                    rv = rv.Where(w => w.Favorite == filter.Favorite);
+                }
+                if (filter.Format != null)
+                {
+                    rv = rv.Where(w => w.Format == filter.Format);
+                }
+                if (filter.GrapeType != null)
+                {
+                    rv = rv.Where(w => w.GrapeType == filter.GrapeType);
+                }
+                if (filter.ID != null)
+                {
+                    rv = rv.Where(w => w.ID == filter.ID);
+                }
+                if (filter.Location != null)
+                {
+                    rv = rv.Where(w => w.Location == filter.Location);
+                }
+                if (filter.MarketPrice != null)
+                {
+                    rv = rv.Where(w => w.MarketPrice == 10);
+                }
+                if (filter.NumberOfBottles != null)
+                {
+                    rv = rv.Where(w => w.NumberOfBottles == filter.NumberOfBottles);
+                }
+                if (filter.PurchasePrice != null)
+                {
+                    rv = rv.Where(w => w.PurchasePrice == filter.PurchasePrice);
+                }
+                if (filter.Region != null)
+                {
+                    rv = rv.Where(w => w.Region == filter.Region);
+                }
+                if (filter.Tags != null)
+                {
+                    rv = rv.Where(w => w.Tags == filter.Tags);
+                }
+                if(filter.UserID != null)
+                {
+                    rv = rv.Where(w => w.UserID == filter.UserID);
+                }
+                if (filter.Vineyard != null)
+                {
+                    rv = rv.Where(w => w.Vineyard == filter.Vineyard);
+                }
+
+                return rv.ToList();
+
+            } else
+            {
+                return Database.Wines
                        .Where(w => w.Vineyard.Contains(search)
                                 || w.GrapeType.Contains(search)
                                 || w.Year.ToString().Contains(search))
@@ -29,8 +114,7 @@ namespace WineRoomAPI.Services
                        .Skip((pageIndex - 1) * pageSize)
                        .Take(pageSize)
                        .ToList<Wine>();
-
-            return list;
+            }   
         }
         
         public Wine GetIndividualWineByID(int id)
@@ -48,6 +132,7 @@ namespace WineRoomAPI.Services
 
         public void AddWine(Wine wine)
         {
+            wine.DateAdded = DateTime.Now.ToShortDateString();
             Database.Wines.Add(wine);
             Database.SaveChanges();
         }

@@ -7,13 +7,13 @@ namespace WineRoomAPI.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class creatingtablesandconnections : IMigrationMetadata
+    public sealed partial class newdatabase : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(creatingtablesandconnections));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(newdatabase));
         
         string IMigrationMetadata.Id
         {
-            get { return "201704201409204_creating tables and connections"; }
+            get { return "201704210212457_new database"; }
         }
         
         string IMigrationMetadata.Source

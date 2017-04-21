@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using WineRoomAPI.DataContext;
 using WineRoomAPI.Models;
+using WineRoomAPI.Models.FilterModels;
 using WineRoomAPI.Services;
 
 namespace WineRoomAPI.Controllers
@@ -18,9 +19,9 @@ namespace WineRoomAPI.Controllers
 
         //get wine
         [HttpGet]
-        public IHttpActionResult Get(int pageIndex = 1, int pageSize = 10, string sortBy = "ID", string search = "")
+        public IHttpActionResult Get(int pageIndex = 1, int pageSize = 10, string sortBy = "ID", string search = "", FilterParameters filter = null)
         {
-            return Ok(wineServices.GetAllWine(pageIndex, pageSize, sortBy, search));
+            return Ok(wineServices.GetAllWine(pageIndex, pageSize, sortBy, search, filter));
         }
 
         //create wine

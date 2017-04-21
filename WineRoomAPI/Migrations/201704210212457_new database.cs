@@ -3,7 +3,7 @@ namespace WineRoomAPI.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class creatingtablesandconnections : DbMigration
+    public partial class newdatabase : DbMigration
     {
         public override void Up()
         {

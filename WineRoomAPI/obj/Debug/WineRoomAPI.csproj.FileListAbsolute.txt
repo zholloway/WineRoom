@@ -75,6 +75,6 @@ C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoo
 C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\bin\EntityFramework.SqlServer.dll
 C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\bin\EntityFramework.xml
 C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\bin\EntityFramework.SqlServer.xml
-C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\obj\Debug\WineRoomAPI.Migrations.creatingtablesandconnections.resources
-C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\obj\Debug\WineRoomAPI.csproj.GenerateResource.Cache
 C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\bin\System.Linq.Dynamic.dll
+C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\obj\Debug\WineRoomAPI.Migrations.newdatabase.resources
+C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\obj\Debug\WineRoomAPI.csproj.GenerateResource.Cache
