@@ -11,13 +11,13 @@ namespace WineRoomAPI.Models
         public int ID { get; set; }
         public int NumberOfBottles { get; set; }
         public string Format { get; set; }
-        public int Year { get; set; }
+        public DateTime Year { get; set; }
         public string GrapeType { get; set; }
         public string Vineyard { get; set; }
-        public string DateAdded { get; set; }
+        public DateTime DateAdded { get; set; } = DateTime.Now;
         public string Location { get; set; }
-        public string DrinkableStart { get; set; }
-        public string DrinkableEnd { get; set; }
+        public DateTime DrinkableStart { get; set; }
+        public DateTime DrinkableEnd { get; set; }
         public decimal PurchasePrice { get; set; }
         public decimal MarketPrice { get; set; }
         public bool Favorite { get; set; }

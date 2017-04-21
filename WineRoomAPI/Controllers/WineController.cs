@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Filters;
 using WineRoomAPI.DataContext;
 using WineRoomAPI.Models;
 using WineRoomAPI.Models.FilterModels;
@@ -11,8 +12,25 @@ using WineRoomAPI.Services;
 
 namespace WineRoomAPI.Controllers
 {
+    [AllowCrossSiteJson]
     public class WineController : ApiController
     {
+        /*
+            The following class allows the Wine User Site to access everything by 
+            setting the header "Access-Control-Allow-Origin" to "*". 
+            [AllowCrossSiteJson] above the WineController class applies this status to every method here.
+        */
+        public class AllowCrossSiteJsonAttribute : ActionFilterAttribute
+        {
+            public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
+            {
+                if (actionExecutedContext.Response != null)
+                    actionExecutedContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+
+                base.OnActionExecuted(actionExecutedContext);
+            }
+        }
+
         static WineroomContext database = new WineroomContext();
 
         WineServices wineServices = new WineServices(database);

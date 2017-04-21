@@ -7,13 +7,13 @@ namespace WineRoomAPI.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class realdatabase : IMigrationMetadata
+    public sealed partial class updatingdatestodatetimetypes : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(realdatabase));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(updatingdatestodatetimetypes));
         
         string IMigrationMetadata.Id
         {
-            get { return "201704210248012_real database"; }
+            get { return "201704211423374_updating dates to datetime types"; }
         }
         
         string IMigrationMetadata.Source

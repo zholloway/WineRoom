@@ -39,11 +39,13 @@ namespace WineRoomAPI.Services
                 }
                 if (filter.DrinkableEnd != null)
                 {
-                    rv = rv.Where(w => w.DrinkableEnd == filter.DrinkableEnd);
+                    rv = rv.Where(w => w.DrinkableEnd <= filter.DrinkableEnd.LatestDate 
+                                    && w.DrinkableEnd >= filter.DrinkableEnd.EarliestDate);
                 }
                 if (filter.DrinkableStart != null)
                 {
-                    rv = rv.Where(w => w.DrinkableStart == filter.DrinkableStart);
+                    rv = rv.Where(w => w.DrinkableStart <= filter.DrinkableStart.LatestDate 
+                                    && w.DrinkableStart >= filter.DrinkableStart.EarliestDate);
                 }
                 if (filter.Favorite != null)
                 {
@@ -51,11 +53,13 @@ namespace WineRoomAPI.Services
                 }
                 if (filter.MarketPrice != null)
                 {
-                    rv = rv.Where(w => w.MarketPrice <= filter.MarketPrice.MaximumPrice && w.MarketPrice >= filter.MarketPrice.MaximumPrice);
+                    rv = rv.Where(w => w.MarketPrice <= filter.MarketPrice.MaximumPrice 
+                                    && w.MarketPrice >= filter.MarketPrice.MinimumPrice);
                 }
                 if (filter.PurchasePrice != null)
                 {
-                    rv = rv.Where(w => w.PurchasePrice == filter.PurchasePrice);
+                    rv = rv.Where(w => w.PurchasePrice <= filter.PurchasePrice.MaximumValue 
+                                    && w.PurchasePrice >= filter.PurchasePrice.MinimumValue);
                 }
                 if (filter.Region != null)
                 {
@@ -96,7 +100,7 @@ namespace WineRoomAPI.Services
 
         public void AddWine(Wine wine)
         {
-            wine.DateAdded = DateTime.Now.ToShortDateString();
+            wine.DateAdded = DateTime.Now;
             Database.Wines.Add(wine);
             Database.SaveChanges();
         }
@@ -106,7 +110,7 @@ namespace WineRoomAPI.Services
             Wine editWine = Database.Wines.First(f => f.ID == wine.ID);
 
             editWine.Color = wine.Color;
-            editWine.DateAdded = wine.DateAdded;
+            //editWine.DateAdded = wine.DateAdded;
             editWine.DrinkableEnd = wine.DrinkableEnd;
             editWine.DrinkableStart = wine.DrinkableStart;
             editWine.Favorite = wine.Favorite;

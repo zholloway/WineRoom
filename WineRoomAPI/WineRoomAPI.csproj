@@ -186,18 +186,20 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\WineController.cs" />
     <Compile Include="DataContext\WineroomContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201704210248012_real database.cs" />
-    <Compile Include="Migrations\201704210248012_real database.Designer.cs">
-      <DependentUpon>201704210248012_real database.cs</DependentUpon>
+    <Compile Include="Migrations\201704211423374_updating dates to datetime types.cs" />
+    <Compile Include="Migrations\201704211423374_updating dates to datetime types.Designer.cs">
+      <DependentUpon>201704211423374_updating dates to datetime types.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DrankWine.cs" />
+    <Compile Include="Models\FilterModels\DrinkableEnd.cs" />
+    <Compile Include="Models\FilterModels\DrinkableStart.cs" />
+    <Compile Include="Models\FilterModels\PurchasePrice.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Wine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -280,8 +282,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201704210248012_real database.resx">
-      <DependentUpon>201704210248012_real database.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201704211423374_updating dates to datetime types.resx">
+      <DependentUpon>201704211423374_updating dates to datetime types.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -3,7 +3,7 @@ namespace WineRoomAPI.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class realdatabase : DbMigration
+    public partial class updatingdatestodatetimetypes : DbMigration
     {
         public override void Up()
         {
@@ -29,13 +29,13 @@ namespace WineRoomAPI.Migrations
                         ID = c.Int(nullable: false, identity: true),
                         NumberOfBottles = c.Int(nullable: false),
                         Format = c.String(),
-                        Year = c.Int(nullable: false),
+                        Year = c.DateTime(nullable: false),
                         GrapeType = c.String(),
                         Vineyard = c.String(),
-                        DateAdded = c.String(),
+                        DateAdded = c.DateTime(nullable: false),
                         Location = c.String(),
-                        DrinkableStart = c.String(),
-                        DrinkableEnd = c.String(),
+                        DrinkableStart = c.DateTime(nullable: false),
+                        DrinkableEnd = c.DateTime(nullable: false),
                         PurchasePrice = c.Decimal(nullable: false, precision: 18, scale: 2),
                         MarketPrice = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Favorite = c.Boolean(nullable: false),
