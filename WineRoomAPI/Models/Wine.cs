@@ -11,7 +11,7 @@ namespace WineRoomAPI.Models
         public int ID { get; set; }
         public int NumberOfBottles { get; set; }
         public string Format { get; set; }
-        public DateTime Year { get; set; }
+        public int Year { get; set; }
         public string GrapeType { get; set; }
         public string Vineyard { get; set; }
         public DateTime DateAdded { get; set; } = DateTime.Now;

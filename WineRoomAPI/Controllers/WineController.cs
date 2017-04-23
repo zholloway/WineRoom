@@ -9,17 +9,19 @@ using WineRoomAPI.DataContext;
 using WineRoomAPI.Models;
 using WineRoomAPI.Models.FilterModels;
 using WineRoomAPI.Services;
+using System.Web.Http.Cors;
 
 namespace WineRoomAPI.Controllers
 {
     [AllowCrossSiteJson]
+    [EnableCors(origins: "http://wineroomonline.gear.host", headers: "*", methods: "*")]
     public class WineController : ApiController
     {
-        /*
+            /*
             The following class allows the Wine User Site to access everything by 
             setting the header "Access-Control-Allow-Origin" to "*". 
             [AllowCrossSiteJson] above the WineController class applies this status to every method here.
-        */
+            */
         public class AllowCrossSiteJsonAttribute : ActionFilterAttribute
         {
             public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
@@ -29,7 +31,7 @@ namespace WineRoomAPI.Controllers
 
                 base.OnActionExecuted(actionExecutedContext);
             }
-        }
+        }       
 
         static WineroomContext database = new WineroomContext();
 
@@ -37,25 +39,32 @@ namespace WineRoomAPI.Controllers
 
         //get wine
         [HttpGet]
+        public IHttpActionResult Get(int id)
+        {
+            return Ok(wineServices.GetIndividualWineByID(id));
+        }
+
+        [HttpGet]
         public IHttpActionResult Get(FilterParameters filter, int pageIndex = 1, int pageSize = 10, string sortBy = "ID", string search = "")
         {
             return Ok(wineServices.GetAllWine(pageIndex, pageSize, sortBy, search, filter));
         }
 
         //create wine
-        [HttpPut]
+        [HttpPost]
         public IHttpActionResult Add(Wine wine)
         {
             wineServices.AddWine(wine);
-            return Ok("New wine successfully added to the collection.");
+            var newWine = wineServices.FindNewWine(wine);
+            return Ok($"Wine ID-{newWine.ID} successfully added.");
         }
 
         //update wine
-        [HttpPost]
-        public IHttpActionResult Edit(Wine wine)
+        [HttpPut]
+        public IHttpActionResult Edit(int id, Wine wine)
         {
-            wineServices.EditWine(wine);
-            return Ok("The wine was successfully updated.");
+            wineServices.EditWine(id, wine);
+            return Ok($"Wine ID-{id} successfully updated.");
         }
 
         //delete wine
@@ -63,7 +72,7 @@ namespace WineRoomAPI.Controllers
         public IHttpActionResult Delete(int id)
         {
             wineServices.DeleteWine(id);
-            return Ok("The wine was successfully deleted from the collection.");
+            return Ok($"Wine ID-{id} successfully deleted.");
         }
     }
 }

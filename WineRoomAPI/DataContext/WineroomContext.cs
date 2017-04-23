@@ -8,8 +8,9 @@ using WineRoomAPI.Models;
 namespace WineRoomAPI.DataContext
 {
     public class WineroomContext :DbContext
-    {       
-        public WineroomContext():base()
+    {
+        const string path = "Server=mssql4.gear.host;Database=wineroom;Uid=wineroom;Pwd=Vl9sfc_K!8Na;";
+        public WineroomContext():base(path)
         {
 
         } 

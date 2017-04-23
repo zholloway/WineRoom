@@ -18,7 +18,7 @@ namespace WineRoomAPI.Services
         {
             Database = database;
         }
-
+        
         public List<Wine> GetAllWine(int pageIndex, int pageSize, string sortBy, string search, FilterParameters filter)
         {
             
@@ -105,12 +105,34 @@ namespace WineRoomAPI.Services
             Database.SaveChanges();
         }
 
-        public void EditWine(Wine wine)
+        public Wine FindNewWine(Wine wine)
         {
-            Wine editWine = Database.Wines.First(f => f.ID == wine.ID);
+            return Database.Wines
+                    .Where(w => w.Vineyard == wine.Vineyard
+                            && w.GrapeType == wine.GrapeType
+                            && w.Year == wine.Year
+                            && w.NumberOfBottles == wine.NumberOfBottles
+                            && w.Format == wine.Format
+                            && w.Location == wine.Location
+                            && w.DrinkableStart == wine.DrinkableStart
+                            && w.DrinkableEnd == wine.DrinkableEnd
+                            && w.PurchasePrice == wine.PurchasePrice
+                            && w.MarketPrice == wine.MarketPrice
+                            && w.Favorite == wine.Favorite
+                            && w.Region == wine.Region
+                            && w.Color == wine.Color
+                            && w.Tags == wine.Tags  
+                            && w.UserID == wine.UserID
+                            )
+                    .First();
+                                
+        }
+
+        public void EditWine(int id, Wine wine)
+        {
+            Wine editWine = Database.Wines.First(f => f.ID == id);
 
             editWine.Color = wine.Color;
-            //editWine.DateAdded = wine.DateAdded;
             editWine.DrinkableEnd = wine.DrinkableEnd;
             editWine.DrinkableStart = wine.DrinkableStart;
             editWine.Favorite = wine.Favorite;
