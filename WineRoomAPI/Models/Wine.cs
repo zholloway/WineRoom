@@ -14,10 +14,10 @@ namespace WineRoomAPI.Models
         public int Year { get; set; }
         public string GrapeType { get; set; }
         public string Vineyard { get; set; }
-        public DateTime DateAdded { get; set; } = DateTime.Now;
+        public DateTime? DateAdded { get; set; }
         public string Location { get; set; }
-        public DateTime DrinkableStart { get; set; }
-        public DateTime DrinkableEnd { get; set; }
+        public DateTime? DrinkableStart { get; set; }
+        public DateTime? DrinkableEnd { get; set; }
         public decimal PurchasePrice { get; set; }
         public decimal MarketPrice { get; set; }
         public bool Favorite { get; set; }
@@ -25,7 +25,7 @@ namespace WineRoomAPI.Models
         public string Color { get; set; }
         public string Tags { get; set; }
 
-        public int UserID { get; set; }
+        public int? UserID { get; set; }
         public User User { get; set; }
     }
 }

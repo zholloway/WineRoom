@@ -13,25 +13,13 @@ using System.Web.Http.Cors;
 
 namespace WineRoomAPI.Controllers
 {
-    [AllowCrossSiteJson]
     [EnableCors(origins: "http://wineroomonline.gear.host", headers: "*", methods: "*")]
     public class WineController : ApiController
     {
-            /*
-            The following class allows the Wine User Site to access everything by 
-            setting the header "Access-Control-Allow-Origin" to "*". 
-            [AllowCrossSiteJson] above the WineController class applies this status to every method here.
-            */
-        public class AllowCrossSiteJsonAttribute : ActionFilterAttribute
+        public HttpResponseMessage Options()
         {
-            public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
-            {
-                if (actionExecutedContext.Response != null)
-                    actionExecutedContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-
-                base.OnActionExecuted(actionExecutedContext);
-            }
-        }       
+            return new HttpResponseMessage { StatusCode = HttpStatusCode.OK };
+        }
 
         static WineroomContext database = new WineroomContext();
 
@@ -47,7 +35,9 @@ namespace WineRoomAPI.Controllers
         [HttpGet]
         public IHttpActionResult Get(FilterParameters filter, int pageIndex = 1, int pageSize = 10, string sortBy = "ID", string search = "")
         {
-            return Ok(wineServices.GetAllWine(pageIndex, pageSize, sortBy, search, filter));
+            var list = wineServices.GetAllWine(pageIndex, pageSize, sortBy, search, filter);
+            var jsonString = wineServices.ListForReturn(list, pageIndex, pageSize);
+            return Ok(jsonString);
         }
 
         //create wine

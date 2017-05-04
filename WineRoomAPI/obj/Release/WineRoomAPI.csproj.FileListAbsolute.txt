@@ -81,3 +81,7 @@ C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoo
 C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\bin\System.Web.Cors.dll
 C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\bin\System.Web.Http.Cors.dll
 C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\bin\System.Web.Http.Cors.xml
+C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\bin\Swashbuckle.Core.dll
+C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\bin\WebActivatorEx.dll
+C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\obj\Release\WineRoomAPI.Migrations.Nullable.resources
+C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\obj\Release\WineRoomAPI.Migrations.MadeUserIdOptional.resources

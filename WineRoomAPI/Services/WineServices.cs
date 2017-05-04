@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using WineRoomAPI.DataContext;
 using WineRoomAPI.Models;
 using System.Linq.Dynamic;
+using Newtonsoft.Json;
 
 namespace WineRoomAPI.Services
 {
@@ -20,8 +21,7 @@ namespace WineRoomAPI.Services
         }
         
         public List<Wine> GetAllWine(int pageIndex, int pageSize, string sortBy, string search, FilterParameters filter)
-        {
-            
+        {     
             if (filter != null)
             {
                 var rv = Database.Wines
@@ -83,6 +83,18 @@ namespace WineRoomAPI.Services
                        .Take(pageSize)
                        .ToList<Wine>();
             }   
+        }
+
+        public JSONreturn ListForReturn(List<Wine> list, int pageIndex, int pageSize)
+        {
+            JSONreturn jsonObject = new JSONreturn();
+            jsonObject.success = "true";
+            jsonObject.message = "we did it";
+            jsonObject.pageIndex = pageIndex;
+            jsonObject.pageSize = pageSize;
+            jsonObject.data = list;
+
+            return jsonObject;
         }
         
         public Wine GetIndividualWineByID(int id)
@@ -149,7 +161,6 @@ namespace WineRoomAPI.Services
             editWine.Year = wine.Year;
 
             Database.SaveChanges();
-        }
-        
+        }     
     }
 }
