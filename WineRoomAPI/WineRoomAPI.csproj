@@ -200,6 +200,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\DrankWineController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\WineController.cs" />
     <Compile Include="DataContext\WineroomContext.cs" />
     <Compile Include="Global.asax.cs">
@@ -227,7 +228,9 @@
     <Compile Include="Models\Wine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\FilterModels\MarketPrice.cs" />
+    <Compile Include="Services\DrankWineServices.cs" />
     <Compile Include="Services\FilterParameters\FilterParameters.cs" />
+    <Compile Include="Services\UserServices.cs" />
     <Compile Include="Services\WineServices.cs" />
   </ItemGroup>
   <ItemGroup>

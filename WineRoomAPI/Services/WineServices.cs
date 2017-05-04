@@ -8,6 +8,7 @@ using WineRoomAPI.DataContext;
 using WineRoomAPI.Models;
 using System.Linq.Dynamic;
 using Newtonsoft.Json;
+using WineRoomAPI.Models.JsonReturnModels;
 
 namespace WineRoomAPI.Services
 {
@@ -85,14 +86,14 @@ namespace WineRoomAPI.Services
             }   
         }
 
-        public JSONreturn ListForReturn(List<Wine> list, int pageIndex, int pageSize)
+        public JsonWineGet JsonGetReturn(List<Wine> list, int pageIndex, int pageSize)
         {
-            JSONreturn jsonObject = new JSONreturn();
-            jsonObject.success = "true";
-            jsonObject.message = "we did it";
-            jsonObject.pageIndex = pageIndex;
-            jsonObject.pageSize = pageSize;
-            jsonObject.data = list;
+            JsonWineGet jsonObject = new JsonWineGet();
+            jsonObject.Success = true;
+            jsonObject.Message = "we did it";
+            jsonObject.PageIndex = pageIndex;
+            jsonObject.PageSize = pageSize;
+            jsonObject.Data = list;
 
             return jsonObject;
         }
@@ -162,5 +163,14 @@ namespace WineRoomAPI.Services
 
             Database.SaveChanges();
         }     
+
+        public JsonWineCrud JsonCrudReturn(int id)
+        {
+            return new JsonWineCrud {
+                Success = true,
+                Message = "we did it",
+                WineID = id
+            };
+        }
     }
 }

@@ -35,9 +35,8 @@ namespace WineRoomAPI.Controllers
         [HttpGet]
         public IHttpActionResult Get(FilterParameters filter, int pageIndex = 1, int pageSize = 10, string sortBy = "ID", string search = "")
         {
-            var list = wineServices.GetAllWine(pageIndex, pageSize, sortBy, search, filter);
-            var jsonString = wineServices.ListForReturn(list, pageIndex, pageSize);
-            return Ok(jsonString);
+            var list = wineServices.GetAllWine(pageIndex, pageSize, sortBy, search, filter);          
+            return Ok(wineServices.JsonGetReturn(list, pageIndex, pageSize));
         }
 
         //create wine
@@ -46,7 +45,7 @@ namespace WineRoomAPI.Controllers
         {
             wineServices.AddWine(wine);
             var newWine = wineServices.FindNewWine(wine);
-            return Ok($"Wine ID-{newWine.ID} successfully added.");
+            return Ok(wineServices.JsonCrudReturn(newWine.ID));
         }
 
         //update wine
@@ -54,7 +53,7 @@ namespace WineRoomAPI.Controllers
         public IHttpActionResult Edit(int id, Wine wine)
         {
             wineServices.EditWine(id, wine);
-            return Ok($"Wine ID-{id} successfully updated.");
+            return Ok(wineServices.JsonCrudReturn(id));
         }
 
         //delete wine
@@ -62,7 +61,7 @@ namespace WineRoomAPI.Controllers
         public IHttpActionResult Delete(int id)
         {
             wineServices.DeleteWine(id);
-            return Ok($"Wine ID-{id} successfully deleted.");
+            return Ok(wineServices.JsonCrudReturn(id));
         }
     }
 }

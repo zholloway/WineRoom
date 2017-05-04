@@ -4,40 +4,48 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using WineRoomAPI.Models;
 using WineRoomAPI.Services.DrankWineServices;
 
 namespace WineRoomAPI.Controllers
 {
+    [EnableCors(origins: "http://wineroomonline.gear.host", headers: "*", methods: "*")]
     public class DrankWineController : ApiController
     {
         DrankWineServices drankWineServices = new DrankWineServices();
 
+        public HttpResponseMessage Options()
+        {
+            return new HttpResponseMessage { StatusCode = HttpStatusCode.OK };
+        }
+
         [HttpGet]
         public IHttpActionResult Get()
-        {
-            return Ok(drankWineServices.GetDrankWines());
+        {         
+            return Ok(drankWineServices.JsonDrankWineGet(drankWineServices.GetDrankWines()));
         }
 
         [HttpPost]
         public IHttpActionResult EditDrankWine(int id, DrankWine drankWine)
         {
             drankWineServices.EditDrankWine(id, drankWine);
-            return Ok($"Wine ID-{drankWine.WineID} successfully edited.");
+            return Ok(drankWineServices.JsonDrankWineReturn(id));
         } 
 
         [HttpPost]
         public IHttpActionResult AddDrankWine(DrankWine drankWine)
         {
             drankWineServices.AddDrankWine(drankWine);
-            return Ok($"Wine ID-{drankWine.WineID} added to Drank List.");
+            var newDrankWine = drankWineServices.FindNewDrankWine(drankWine);
+            return Ok(drankWineServices.JsonDrankWineReturn(newDrankWine.ID));
         }   
 
         [HttpDelete]
         public IHttpActionResult DeleteDrankWine(int id)
         {
             drankWineServices.DeleteDrankWine(id);
-            return Ok($"Wine ID-{id} deleted from Drank List.");
+            return Ok(drankWineServices.JsonDrankWineReturn(id));
         }
     }
 }
