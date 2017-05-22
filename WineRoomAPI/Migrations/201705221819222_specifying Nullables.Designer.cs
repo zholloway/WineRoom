@@ -7,13 +7,13 @@ namespace WineRoomAPI.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class MadeUserIdOptional : IMigrationMetadata
+    public sealed partial class specifyingNullables : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(MadeUserIdOptional));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(specifyingNullables));
         
         string IMigrationMetadata.Id
         {
-            get { return "201704251710344_MadeUserIdOptional"; }
+            get { return "201705221819222_specifying Nullables"; }
         }
         
         string IMigrationMetadata.Source

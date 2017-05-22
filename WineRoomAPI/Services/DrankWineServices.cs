@@ -13,9 +13,13 @@ namespace WineRoomAPI.Services.DrankWineServices
     {
         public WineroomContext Database { get; } = new WineroomContext();
 
-        public List<DrankWine> GetDrankWines()
+        public List<DrankWine> GetDrankWines(int pageIndex, int pageSize)
         {
-            return Database.DrankWines.OrderByDescending(o => o.DateDrank).ToList();
+            return Database.DrankWines
+                .OrderByDescending(o => o.DateDrank)
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
         }
 
         public JsonDrankWineGet JsonDrankWineGet(List<DrankWine> drankWineList)
@@ -34,6 +38,7 @@ namespace WineRoomAPI.Services.DrankWineServices
 
         public void AddDrankWine(DrankWine drankWine)
         {
+            drankWine.DateDrank = DateTime.Now;
             Database.DrankWines.Add(drankWine);
             Database.SaveChanges();
         }

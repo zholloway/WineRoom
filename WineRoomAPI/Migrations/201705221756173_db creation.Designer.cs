@@ -7,13 +7,13 @@ namespace WineRoomAPI.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Nullable : IMigrationMetadata
+    public sealed partial class dbcreation : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Nullable));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(dbcreation));
         
         string IMigrationMetadata.Id
         {
-            get { return "201704251706410_Nullable"; }
+            get { return "201705221756173_db creation"; }
         }
         
         string IMigrationMetadata.Source

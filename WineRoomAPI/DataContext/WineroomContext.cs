@@ -9,7 +9,7 @@ namespace WineRoomAPI.DataContext
 {
     public class WineroomContext :DbContext
     {
-        const string path = "Server=mssql4.gear.host;Database=wineroom;Uid=wineroom;Pwd=Vl9sfc_K!8Na;";
+        const string path = "Server=mssql5.gear.host;Database=wineroom;Uid=wineroom;Pwd=Op0qjE2_Vs~o;";
         public WineroomContext():base(path)
         {
 

@@ -21,12 +21,12 @@ namespace WineRoomAPI.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult Get()
+        public IHttpActionResult Get(int pageIndex = 1, int pageSize = 10)
         {         
-            return Ok(drankWineServices.JsonDrankWineGet(drankWineServices.GetDrankWines()));
+            return Ok(drankWineServices.JsonDrankWineGet(drankWineServices.GetDrankWines(pageIndex, pageSize)));
         }
 
-        [HttpPost]
+        [HttpPut]
         public IHttpActionResult EditDrankWine(int id, DrankWine drankWine)
         {
             drankWineServices.EditDrankWine(id, drankWine);
