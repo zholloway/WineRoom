@@ -219,6 +219,8 @@
     <Compile Include="Models\FilterModels\DrinkableEnd.cs" />
     <Compile Include="Models\FilterModels\DrinkableStart.cs" />
     <Compile Include="Models\FilterModels\PurchasePrice.cs" />
+    <Compile Include="Models\JsonReturnModels\JsonDrankWineAdd.cs" />
+    <Compile Include="Models\JsonReturnModels\JsonDrankWineAddDataObject.cs" />
     <Compile Include="Models\JsonReturnModels\JsonDrankWineCrud.cs" />
     <Compile Include="Models\JsonReturnModels\JsonDrankWineGet.cs" />
     <Compile Include="Models\JsonReturnModels\JsonUserCrud.cs" />

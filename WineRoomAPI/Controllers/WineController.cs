@@ -21,9 +21,7 @@ namespace WineRoomAPI.Controllers
             return new HttpResponseMessage { StatusCode = HttpStatusCode.OK };
         }
 
-        static WineroomContext database = new WineroomContext();
-
-        WineServices wineServices = new WineServices(database);
+        WineServices wineServices = new WineServices();
 
         //get wine
         [HttpGet]

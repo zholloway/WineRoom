@@ -5,7 +5,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using WineRoomAPI.DataContext;
 using WineRoomAPI.Models;
+using WineRoomAPI.Services;
 using WineRoomAPI.Services.DrankWineServices;
 
 namespace WineRoomAPI.Controllers
@@ -14,6 +16,8 @@ namespace WineRoomAPI.Controllers
     public class DrankWineController : ApiController
     {
         DrankWineServices drankWineServices = new DrankWineServices();
+        WineServices wineServices = new WineServices();
+        WineroomContext db = new WineroomContext();
 
         public HttpResponseMessage Options()
         {
@@ -22,8 +26,11 @@ namespace WineRoomAPI.Controllers
 
         [HttpGet]
         public IHttpActionResult Get(int pageIndex = 1, int pageSize = 10)
-        {         
-            return Ok(drankWineServices.JsonDrankWineGet(drankWineServices.GetDrankWines(pageIndex, pageSize)));
+        {   
+            List<DrankWine> drankWines = drankWineServices.GetDrankWines(pageIndex, pageSize);
+            List<DrankWine> drunkWines = db.DrankWines.ToList();
+
+            return Ok(drankWineServices.JsonDrankWineGet(drankWines));
         }
 
         [HttpPut]
@@ -34,11 +41,18 @@ namespace WineRoomAPI.Controllers
         } 
 
         [HttpPost]
-        public IHttpActionResult AddDrankWine(DrankWine drankWine)
+        public IHttpActionResult AddDrankWine(DrankWine wine)
         {
-            drankWineServices.AddDrankWine(drankWine);
-            var newDrankWine = drankWineServices.FindNewDrankWine(drankWine);
-            return Ok(drankWineServices.JsonDrankWineReturn(newDrankWine.ID));
+            //store location temporarily
+            var location = wineServices.GetIndividualWineByID(wine.WineID).Location;
+
+            //add drankwine
+            DrankWine drunkWine = drankWineServices.AddDrankWine(wine);
+
+            //delete the wine from the wine list
+            wineServices.DecrementWineBottles(drunkWine.WineID);
+
+            return Ok(drankWineServices.JsonDrankWineAddReturn(drunkWine.ID, location));
         }   
 
         [HttpDelete]

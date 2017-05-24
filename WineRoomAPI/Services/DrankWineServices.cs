@@ -36,22 +36,20 @@ namespace WineRoomAPI.Services.DrankWineServices
             return Database.DrankWines.First(f => f.ID == id);
         }
 
-        public void AddDrankWine(DrankWine drankWine)
+        public DrankWine AddDrankWine(DrankWine wine)
         {
-            drankWine.DateDrank = DateTime.Now;
-            Database.DrankWines.Add(drankWine);
-            Database.SaveChanges();
-        }
+            //add new drankwine
+            DrankWine drunkWine = new DrankWine {
+                WineID = wine.WineID,
+                DateDrank = DateTime.Now,
+            };
 
-        public DrankWine FindNewDrankWine(DrankWine drankWine)
-        {
-            return Database.DrankWines
-                .Where(w => w.Comments == drankWine.Comments)
-                .Where(w => w.DateDrank == drankWine.DateDrank)
-                .Where(w => w.Location == drankWine.Location)
-                .Where(w => w.People == drankWine.People)
-                .Where(w => w.WineID == drankWine.WineID)
-                as DrankWine;
+            Database.DrankWines.Add(drunkWine);
+
+            Database.SaveChanges();
+         
+            //return the new drankwine entry
+            return drunkWine;
         }
 
         public void DeleteDrankWine(int id)
@@ -79,6 +77,22 @@ namespace WineRoomAPI.Services.DrankWineServices
                 Message = "we did it",
                 DrankWineID = id
             };
+        }
+
+        public JsonDrankWineAdd JsonDrankWineAddReturn(int id, string location)
+        {
+            var data = new JsonDrankWineAddDataObject();
+            data.DrankWineID = id;
+            data.Location = location;
+
+            var rv = new JsonDrankWineAdd
+            {
+                Success = true,
+                Message = "we did it",
+                Data = data
+            };
+
+            return rv;
         }
     }
 }

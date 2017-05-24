@@ -14,12 +14,7 @@ namespace WineRoomAPI.Services
 {
     public class WineServices
     {
-        public WineroomContext Database { get; set; }
-
-        public WineServices(WineroomContext database)
-        {
-            Database = database;
-        }
+        public WineroomContext Database { get; } = new WineroomContext();
         
         public List<Wine> GetAllWine(int pageIndex, int pageSize, string sortBy, string search, FilterParameters filter)
         {     
@@ -108,6 +103,13 @@ namespace WineRoomAPI.Services
         public void DeleteWine(int id)
         {
             Database.Wines.Remove(GetIndividualWineByID(id));
+            Database.SaveChanges();
+        }
+
+        public void DecrementWineBottles(int id)
+        {
+            var wine = Database.Wines.First(f => f.ID == id);
+            wine.NumberOfBottles--;
             Database.SaveChanges();
         }
 
