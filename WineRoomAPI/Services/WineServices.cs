@@ -89,6 +89,7 @@ namespace WineRoomAPI.Services
             jsonObject.PageIndex = pageIndex;
             jsonObject.PageSize = pageSize;
             jsonObject.Data = list;
+            jsonObject.TotalPages = (int)Math.Ceiling((double)Database.Wines.Count() / (double)pageSize); 
 
             return jsonObject;
         }

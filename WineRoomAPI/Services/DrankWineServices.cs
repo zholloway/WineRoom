@@ -6,6 +6,7 @@ using WineRoomAPI.DataContext;
 using WineRoomAPI.Models;
 using System.Linq.Dynamic;
 using WineRoomAPI.Models.JsonReturnModels;
+using System.Data.Entity;
 
 namespace WineRoomAPI.Services.DrankWineServices
 {
@@ -13,21 +14,28 @@ namespace WineRoomAPI.Services.DrankWineServices
     {
         public WineroomContext Database { get; } = new WineroomContext();
 
-        public List<DrankWine> GetDrankWines(int pageIndex, int pageSize)
+        public List<DrankWine> GetDrankWines(int pageIndex, int pageSize, string search)
         {
             return Database.DrankWines
+                .Include(i => i.Wine)
+                .Where(w => w.People.Contains(search)
+                                || w.Location.Contains(search)
+                                || w.Comments.ToString().Contains(search))
                 .OrderByDescending(o => o.DateDrank)
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
         }
 
-        public JsonDrankWineGet JsonDrankWineGet(List<DrankWine> drankWineList)
+        public JsonDrankWineGet JsonDrankWineGet(List<DrankWine> drankWineList, int pageIndex, int pageSize)
         {
             return new JsonDrankWineGet {
                 Success = true,
                 Message = "we did it",
-                Data = drankWineList
+                Data = drankWineList,
+                PageIndex = pageIndex,
+                PageSize = pageSize,               
+                TotalPages = (int)Math.Ceiling((double)Database.DrankWines.Count() / (double)pageSize)
             };
         }
 

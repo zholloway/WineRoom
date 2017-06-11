@@ -25,12 +25,12 @@ namespace WineRoomAPI.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult Get(int pageIndex = 1, int pageSize = 10)
+        public IHttpActionResult Get(int pageIndex = 1, int pageSize = 10, string search = "")
         {   
-            List<DrankWine> drankWines = drankWineServices.GetDrankWines(pageIndex, pageSize);
+            List<DrankWine> drankWines = drankWineServices.GetDrankWines(pageIndex, pageSize, search);
             List<DrankWine> drunkWines = db.DrankWines.ToList();
 
-            return Ok(drankWineServices.JsonDrankWineGet(drankWines));
+            return Ok(drankWineServices.JsonDrankWineGet(drankWines, pageIndex, pageSize));
         }
 
         [HttpPut]

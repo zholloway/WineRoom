@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,6 +15,7 @@ namespace WineRoomAPI.Models
         public string Comments { get; set; }
 
         public int WineID { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public Wine Wine { get; set; }
     }
 }
