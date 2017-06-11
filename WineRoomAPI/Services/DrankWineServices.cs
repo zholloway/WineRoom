@@ -19,8 +19,11 @@ namespace WineRoomAPI.Services.DrankWineServices
             return Database.DrankWines
                 .Include(i => i.Wine)
                 .Where(w => w.People.Contains(search)
-                                || w.Location.Contains(search)
-                                || w.Comments.ToString().Contains(search))
+                         || w.Location.Contains(search)
+                         || w.Wine.Vineyard.Contains(search)
+                         || w.Wine.Year.ToString().Contains(search)
+                         || w.Wine.GrapeType.Contains(search)
+                       )
                 .OrderByDescending(o => o.DateDrank)
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
