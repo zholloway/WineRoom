@@ -9,6 +9,7 @@ using WineRoomAPI.Models;
 using System.Linq.Dynamic;
 using Newtonsoft.Json;
 using WineRoomAPI.Models.JsonReturnModels;
+using System.Data.Entity.Validation;
 
 namespace WineRoomAPI.Services
 {
@@ -148,6 +149,7 @@ namespace WineRoomAPI.Services
         {
             Wine editWine = Database.Wines.First(f => f.ID == id);
 
+            editWine.ID = id;
             editWine.Color = wine.Color;
             editWine.DrinkableEnd = wine.DrinkableEnd;
             editWine.DrinkableStart = wine.DrinkableStart;
@@ -158,13 +160,34 @@ namespace WineRoomAPI.Services
             editWine.MarketPrice = wine.MarketPrice;
             editWine.NumberOfBottles = wine.NumberOfBottles;
             editWine.PurchasePrice = wine.PurchasePrice;
+            editWine.Rating = wine.Rating;
             editWine.Region = wine.Region;
             editWine.Tags = wine.Tags;
             editWine.UserID = wine.UserID;
             editWine.Vineyard = wine.Vineyard;
             editWine.Year = wine.Year;
 
-            Database.SaveChanges();
+            try
+            {
+                Database.SaveChanges();
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+            {
+                Exception raise = dbEx;
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        string message = string.Format("{0}:{1}",
+                            validationErrors.Entry.Entity.ToString(),
+                            validationError.ErrorMessage);
+                        // raise a new exception nesting
+                        // the current instance as InnerException
+                        raise = new InvalidOperationException(message, raise);
+                    }
+                }
+                throw raise;
+            }
         }     
 
         public JsonWineCrud JsonCrudReturn(int id)
