@@ -214,6 +214,10 @@
     <Compile Include="Migrations\201705221819222_specifying Nullables.Designer.cs">
       <DependentUpon>201705221819222_specifying Nullables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706112103001_Rating added to Wines model.cs" />
+    <Compile Include="Migrations\201706112103001_Rating added to Wines model.Designer.cs">
+      <DependentUpon>201706112103001_Rating added to Wines model.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DrankWine.cs" />
     <Compile Include="Models\FilterModels\DrinkableEnd.cs" />
@@ -318,6 +322,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705221819222_specifying Nullables.resx">
       <DependentUpon>201705221819222_specifying Nullables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706112103001_Rating added to Wines model.resx">
+      <DependentUpon>201706112103001_Rating added to Wines model.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

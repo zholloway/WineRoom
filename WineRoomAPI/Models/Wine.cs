@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data.SqlClient;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace WineRoomAPI.Models
 {
@@ -44,9 +45,13 @@ namespace WineRoomAPI.Models
         [Required]
         public string Color { get; set; }
 
+        public int? Rating { get; set; }
+
         public string Tags { get; set; }
 
         public int UserID { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public User User { get; set; }
     }
 }
