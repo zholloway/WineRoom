@@ -146,8 +146,8 @@ C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\W
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\bin\EntityFramework.xml
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\bin\EntityFramework.SqlServer.xml
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\bin\System.Web.Http.Cors.xml
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\bin\Newtonsoft.Json.xml
+C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\bin\System.Web.Http.Cors.xml
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\bin\System.Net.Http.Formatting.xml
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\bin\System.Web.Helpers.xml
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\bin\System.Web.Http.xml
@@ -164,10 +164,10 @@ C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\W
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\bin\Microsoft.AI.ServerTelemetryChannel.xml
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\bin\Microsoft.AI.WindowsServer.xml
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\bin\Microsoft.AI.Web.xml
-C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\obj\Debug\WineRoomAPI.csprojResolveAssemblyReference.cache
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\obj\Debug\WineRoomAPI.Migrations.dbcreation.resources
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\obj\Debug\WineRoomAPI.Migrations.specifyingNullables.resources
+C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\obj\Debug\WineRoomAPI.Migrations.RatingaddedtoWinesmodel.resources
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\obj\Debug\WineRoomAPI.csproj.GenerateResource.Cache
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\obj\Debug\WineRoomAPI.dll
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\obj\Debug\WineRoomAPI.pdb
-C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\obj\Debug\WineRoomAPI.Migrations.RatingaddedtoWinesmodel.resources
+C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\obj\Debug\WineRoomAPI.csprojResolveAssemblyReference.cache

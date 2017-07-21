@@ -7,7 +7,7 @@ namespace WineRoomAPI.Models.FilterModels
 {
     public class MarketPrice
     {
-        public decimal MinimumPrice { get; set; }
-        public decimal MaximumPrice { get; set; }
+        public decimal? MinimumPrice { get; set; }
+        public decimal? MaximumPrice { get; set; }
     }
 }

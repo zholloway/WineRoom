@@ -10,6 +10,8 @@ using WineRoomAPI.Models;
 using WineRoomAPI.Models.FilterModels;
 using WineRoomAPI.Services;
 using System.Web.Http.Cors;
+using Newtonsoft.Json;
+using System.Web;
 
 namespace WineRoomAPI.Controllers
 {
@@ -33,14 +35,42 @@ namespace WineRoomAPI.Controllers
         [HttpGet]
         public IHttpActionResult Get(FilterParameters filter, int pageIndex = 1, int pageSize = 10, string sortBy = "ID", string search = "")
         {
-            var list = wineServices.GetAllWine(pageIndex, pageSize, sortBy, search, filter);          
-            return Ok(wineServices.JsonGetReturn(list, pageIndex, pageSize));
+            var request = Request.RequestUri;
+            var uri = new Uri(request.AbsoluteUri);
+            var query = uri.ParseQueryString();
+            var filters = query.Get("filter");
+            var jObj = new FilterParameters();
+            if(filters != null)
+            {
+                jObj = JsonConvert.DeserializeObject<FilterParameters>(filters);
+            }          
+            
+            var list = wineServices.GetAllWine(pageIndex, pageSize, sortBy, search, jObj);
+            var count = wineServices.GetWineCount(search, jObj);
+            return Ok(wineServices.JsonGetReturn(list, pageIndex, pageSize, count));
         }
 
         //create wine
         [HttpPost]
         public IHttpActionResult Add(Wine wine)
         {
+            var request = Request.RequestUri;
+            var uri = new Uri(request.AbsoluteUri);
+            var query = uri.ParseQueryString();
+            var tags = query.Get("Tags");
+            var jObj = new List<string>();
+            if (tags != null)
+            {
+                jObj = JsonConvert.DeserializeObject<List<string>>(tags);
+            }
+            var tagList = string.Empty;
+            foreach (var item in jObj)
+            {
+                tagList += $"{item},";
+            }
+
+            wine.Tags = tagList;
+
             wineServices.AddWine(wine);
             var newWine = wineServices.FindNewWine(wine);
             return Ok(wineServices.JsonCrudReturn(newWine.ID));
@@ -50,7 +80,22 @@ namespace WineRoomAPI.Controllers
         [HttpPut]
         public IHttpActionResult Edit(int id, Wine wine)
         {
-            wineServices.EditWine(id, wine);
+            var request = Request.RequestUri;
+            var uri = new Uri(request.AbsoluteUri);
+            var query = uri.ParseQueryString();
+            var tags = query.Get("Tags");
+            var jObj = new List<string>();
+            if (tags != null)
+            {
+                jObj = JsonConvert.DeserializeObject<List<string>>(tags);
+            }
+            var tagList = string.Empty;
+            foreach(var item in jObj)
+            {
+                tagList += $"{item},";
+            }
+
+            wineServices.EditWine(id, wine, tagList);
             return Ok(wineServices.JsonCrudReturn(id));
         }
 
