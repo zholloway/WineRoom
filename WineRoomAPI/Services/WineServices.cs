@@ -17,7 +17,7 @@ namespace WineRoomAPI.Services
     {
         public WineroomContext Database { get; } = new WineroomContext();
 
-        public List<Wine> GetAllWine(int pageIndex, int pageSize, string sortBy, string search, FilterParameters filter)
+        public List<Wine> GetAllWine(int pageIndex, int pageSize, string sortBy, string search, int userID, FilterParameters filter)
         {
             if (filter != null)
             {
@@ -60,37 +60,47 @@ namespace WineRoomAPI.Services
                     rv = rv.Where(w => w.Favorite == filter.Favorite).ToList();
                 }
                 //MarketPrice
-                if (!(filter.MarketPrice.MaximumPrice == null && filter.MarketPrice.MinimumPrice == null))
+                if (filter.MarketPrice != null)
                 {
-                    if (filter.MarketPrice.MaximumPrice == null && filter.MarketPrice.MinimumPrice != null)
+                    if (!(filter.MarketPrice.MaximumPrice == null && filter.MarketPrice.MinimumPrice == null))
                     {
-                        rv = rv.Where(wine => wine.MarketPrice >= filter.MarketPrice.MinimumPrice).ToList();
-                    } else if (filter.MarketPrice.MaximumPrice != null && filter.MarketPrice.MinimumPrice == null)
-                    {
-                        rv = rv.Where(wine => wine.MarketPrice <= filter.MarketPrice.MaximumPrice).ToList();
-                    } else
-                    {
-                        rv = rv.Where(w => w.MarketPrice <= filter.MarketPrice.MaximumPrice
-                                    && w.MarketPrice >= filter.MarketPrice.MinimumPrice).ToList();
-                    }                   
+                        if (filter.MarketPrice.MaximumPrice == null && filter.MarketPrice.MinimumPrice != null)
+                        {
+                            rv = rv.Where(wine => wine.MarketPrice >= filter.MarketPrice.MinimumPrice).ToList();
+                        }
+                        else if (filter.MarketPrice.MaximumPrice != null && filter.MarketPrice.MinimumPrice == null)
+                        {
+                            rv = rv.Where(wine => wine.MarketPrice <= filter.MarketPrice.MaximumPrice).ToList();
+                        }
+                        else
+                        {
+                            rv = rv.Where(w => w.MarketPrice <= filter.MarketPrice.MaximumPrice
+                                        && w.MarketPrice >= filter.MarketPrice.MinimumPrice).ToList();
+                        }
+                    }
                 }
+                
                 //PurchasePrice
-                if (!(filter.PurchasePrice.MaximumPrice == null && filter.PurchasePrice.MinimumPrice == null))
+                if (filter.PurchasePrice != null)
                 {
-                    if (filter.PurchasePrice.MaximumPrice == null && filter.PurchasePrice.MinimumPrice != null)
+                    if (!(filter.PurchasePrice.MaximumPrice == null && filter.PurchasePrice.MinimumPrice == null))
                     {
-                        rv = rv.Where(wine => wine.PurchasePrice >= filter.PurchasePrice.MinimumPrice).ToList();
-                    }
-                    else if (filter.PurchasePrice.MaximumPrice != null && filter.PurchasePrice.MinimumPrice == null)
-                    {
-                        rv = rv.Where(wine => wine.PurchasePrice <= filter.PurchasePrice.MaximumPrice).ToList();
-                    }
-                    else
-                    {
-                        rv = rv.Where(w => w.MarketPrice <= filter.MarketPrice.MaximumPrice
-                                    && w.MarketPrice >= filter.MarketPrice.MinimumPrice).ToList();
+                        if (filter.PurchasePrice.MaximumPrice == null && filter.PurchasePrice.MinimumPrice != null)
+                        {
+                            rv = rv.Where(wine => wine.PurchasePrice >= filter.PurchasePrice.MinimumPrice).ToList();
+                        }
+                        else if (filter.PurchasePrice.MaximumPrice != null && filter.PurchasePrice.MinimumPrice == null)
+                        {
+                            rv = rv.Where(wine => wine.PurchasePrice <= filter.PurchasePrice.MaximumPrice).ToList();
+                        }
+                        else
+                        {
+                            rv = rv.Where(w => w.MarketPrice <= filter.MarketPrice.MaximumPrice
+                                        && w.MarketPrice >= filter.MarketPrice.MinimumPrice).ToList();
+                        }
                     }
                 }
+                
                 //Region
                 if (filter.Region != null && filter.Region.Count != 0)
                 {
@@ -110,7 +120,36 @@ namespace WineRoomAPI.Services
                 //Tags
                 if (filter.Tags != null)
                 {
-                    rv = rv.Where(w => w.Tags == filter.Tags).ToList();
+                    var tagList = new List<string>();
+                    var match = false;
+
+                    foreach (var tag in filter.Tags)
+                    {
+                        tagList.Add(tag.text);
+                    }
+
+                    foreach (var wine in rv.ToList())
+                    {
+                        var wineTagArray = wine.Tags.Split(' ');
+
+                        foreach (var wineTag in wineTagArray)
+                        {
+                            foreach (var tag in tagList)
+                            {
+                                if (tag == wineTag)
+                                {
+                                    match = true;
+                                }
+                            }
+                        }
+
+                        if (match == false)
+                        {
+                            rv.Remove(wine);
+                        }
+
+                        match = false;
+                    }
                 }
                 //Rating
                 if (filter.Rating != null && !(filter.Rating.MinRating == 1 && filter.Rating.MaxRating == 10))
@@ -136,10 +175,11 @@ namespace WineRoomAPI.Services
                 }
 
                 //paginate the filtered Wines
-                return rv.OrderBy(sortBy)
+                return ConvertWineListTagsToJson(rv.OrderBy(sortBy)
+                    .Where(w => w.UserID == userID)
                     .Skip((pageIndex - 1) * pageSize)
                     .Take(pageSize)
-                    .ToList();
+                    .ToList());
 
             } else
             {
@@ -152,176 +192,246 @@ namespace WineRoomAPI.Services
                        .Take(pageSize)
                        .ToList<Wine>();
 
-                //Tags conversion from good,yummy,dry to JSON string
-                //establish tagList object to eventually convert to JSON
-                var tagList = new List<string>();
-
-                //if a wine has tags, split the tags on ',' and add them to the tagList
-                foreach (var wine in rv)
-                {
-                    if (wine.Tags != null)
-                    {
-                        var tagArray = wine.Tags.Split(',');
-                        for (int i = 0; i < tagArray.Length; i++)
-                        {
-                            tagList.Add(tagArray[i]);
-                        }
-                        //convert the taglist to JSON and save to wine.Tags
-                        wine.Tags = JsonConvert.SerializeObject(tagList);
-                        //empty the tagList
-                        tagList = new List<string>();
-                    }
-                }
-
-                return rv;
+                return ConvertWineListTagsToJson(rv.Where(w => w.UserID == userID).ToList());
             }
         }
 
-        public int GetWineCount(string search, FilterParameters filter)
+        public List<Wine> ConvertWineListTagsToJson(List<Wine> wineList)
+        {
+            //Tags conversion from "test test test " to JSON string
+            //
+            //establish putTags object to eventually convert to JSON
+            var putTags = new List<PutTags>();
+
+            //if a wine has tags, split the tags on ',' and add them to the tagList
+            foreach (var wine in wineList)
+            {
+                if (wine.Tags != null)
+                {
+                    var tagArray = wine.Tags.Split(' ');
+                    for (int i = 0; i < tagArray.Length; i++)
+                    {
+                        var tag = tagArray[i];
+
+                        if (tag != "")
+                        {
+                            var putTag = new PutTags();
+                            putTag.text = tagArray[i];
+                            putTags.Add(putTag);
+                        }
+                    }
+                    //convert the putTags to JSON and save to wine.Tags
+                    wine.Tags = JsonConvert.SerializeObject(putTags);
+                    //empty the putTags
+                    putTags = new List<PutTags>();
+                }
+            }
+
+            return wineList;
+        }
+
+        public Wine ConvertWineTagsToJson(Wine wine)
+        {
+            //Tags conversion from "test test test " to JSON string
+            //
+            //establish putTags object to eventually convert to JSON
+            var putTags = new List<PutTags>();
+
+            //if a wine has tags, split the tags on ',' and add them to the tagList
+            if (wine.Tags != null)
+            {
+                var tagArray = wine.Tags.Split(' ');
+                for (int i = 0; i < tagArray.Length; i++)
+                {
+                    var tag = tagArray[i];
+
+                    if (tag != "")
+                    {
+                        var putTag = new PutTags();
+                        putTag.text = tagArray[i];
+                        putTags.Add(putTag);
+                    }                
+                }
+
+                //convert the putTags to JSON
+                var tags = JsonConvert.SerializeObject(putTags);
+
+                wine.Tags = tags;
+            }
+
+            return wine;
+        }
+
+        public int GetWineCount(int userID, string search, FilterParameters filter)
         {
             if (filter != null)
             {
-                //new List to feed Filtered wines into
-                var nrv = new List<Wine>();
-
                 var rv = Database.Wines
                     .Where(w => w.Vineyard.Contains(search)
                                 || w.GrapeType.Contains(search)
                                 || w.Year.ToString().Contains(search))
-                    .AsQueryable();
+                    .ToList();
 
                 //Color
                 if (filter.Color != null && filter.Color.Count != 0)
                 {
+                    var colorList = new List<string>();
                     foreach (var item in filter.Color)
                     {
-                        if (item != string.Empty)
-                        {
-                            foreach (var wine in rv.Where(w => w.Color == item))
-                            {
-                                if (!nrv.Contains(wine))
-                                {
-                                    nrv.Add(wine);
-                                }
-                            }
-                        }
+                        colorList.Add(item);
                     }
-                }
-                else
-                {
-                    foreach (var wine in rv)
+                    foreach (var wine in rv.ToList())
                     {
-                        if (!nrv.Contains(wine))
+                        if (!colorList.Contains(wine.Color))
                         {
-                            nrv.Add(wine);
+                            rv.Remove(wine);
                         }
                     }
                 }
                 //DrinkableEnd
-                var drinkend = filter.DrinkableEnd.ToString();
                 if (filter.DrinkableEnd != null && filter.DrinkableEnd.ToString() != "1/1/0001 12:00:00 AM")
                 {
-                    rv = rv.Where(w => w.DrinkableEnd <= filter.DrinkableEnd);
+                    rv = rv.Where(w => w.DrinkableEnd <= filter.DrinkableEnd).ToList();
                 }
                 //DrinkableStart
-                var drinkstart = filter.DrinkableEnd.ToString();
                 if (filter.DrinkableStart != null && filter.DrinkableStart.ToString() != "1/1/0001 12:00:00 AM")
                 {
-                    rv = rv.Where(w => w.DrinkableStart >= filter.DrinkableStart);
+
+                    rv = rv.Where(w => w.DrinkableStart >= filter.DrinkableStart).ToList();
                 }
                 //Favorite
                 if (filter.Favorite != null)
                 {
-                    rv = rv.Where(w => w.Favorite == filter.Favorite);
+                    rv = rv.Where(w => w.Favorite == filter.Favorite).ToList();
                 }
                 //MarketPrice
                 if (filter.MarketPrice != null)
                 {
-                    rv = rv.Where(w => w.MarketPrice <= filter.MarketPrice.MaximumPrice
-                                    && w.MarketPrice >= filter.MarketPrice.MinimumPrice);
-                }
-                //PurchasePrice
-                if (filter.PurchasePrice != null)
-                {
-                    rv = rv.Where(w => w.PurchasePrice <= filter.PurchasePrice.MaximumPrice
-                                    && w.PurchasePrice >= filter.PurchasePrice.MinimumPrice);
-                }
-                //Region
-                if (filter.Region != null && filter.Region.Count != 0)
-                {
-                    foreach (var item in filter.Region)
+                    if (!(filter.MarketPrice.MaximumPrice == null && filter.MarketPrice.MinimumPrice == null))
                     {
-                        if (item != string.Empty)
+                        if (filter.MarketPrice.MaximumPrice == null && filter.MarketPrice.MinimumPrice != null)
                         {
-                            foreach (var wine in rv.Where(w => w.Region == item))
-                            {
-                                if (!nrv.Contains(wine))
-                                {
-                                    nrv.Add(wine);
-                                }
-                            }
+                            rv = rv.Where(wine => wine.MarketPrice >= filter.MarketPrice.MinimumPrice).ToList();
+                        }
+                        else if (filter.MarketPrice.MaximumPrice != null && filter.MarketPrice.MinimumPrice == null)
+                        {
+                            rv = rv.Where(wine => wine.MarketPrice <= filter.MarketPrice.MaximumPrice).ToList();
+                        }
+                        else
+                        {
+                            rv = rv.Where(w => w.MarketPrice <= filter.MarketPrice.MaximumPrice
+                                        && w.MarketPrice >= filter.MarketPrice.MinimumPrice).ToList();
                         }
                     }
                 }
-                else
+
+                //PurchasePrice
+                if (filter.PurchasePrice != null)
                 {
-                    foreach (var wine in rv)
+                    if (!(filter.PurchasePrice.MaximumPrice == null && filter.PurchasePrice.MinimumPrice == null))
                     {
-                        if (!nrv.Contains(wine))
+                        if (filter.PurchasePrice.MaximumPrice == null && filter.PurchasePrice.MinimumPrice != null)
                         {
-                            nrv.Add(wine);
+                            rv = rv.Where(wine => wine.PurchasePrice >= filter.PurchasePrice.MinimumPrice).ToList();
+                        }
+                        else if (filter.PurchasePrice.MaximumPrice != null && filter.PurchasePrice.MinimumPrice == null)
+                        {
+                            rv = rv.Where(wine => wine.PurchasePrice <= filter.PurchasePrice.MaximumPrice).ToList();
+                        }
+                        else
+                        {
+                            rv = rv.Where(w => w.MarketPrice <= filter.MarketPrice.MaximumPrice
+                                        && w.MarketPrice >= filter.MarketPrice.MinimumPrice).ToList();
+                        }
+                    }
+                }
+
+                //Region
+                if (filter.Region != null && filter.Region.Count != 0)
+                {
+                    var regionList = new List<string>();
+                    foreach (var item in filter.Region)
+                    {
+                        regionList.Add(item);
+                    }
+                    foreach (var wine in rv.ToList())
+                    {
+                        if (!regionList.Contains(wine.Region))
+                        {
+                            rv.Remove(wine);
                         }
                     }
                 }
                 //Tags
                 if (filter.Tags != null)
                 {
-                    rv = rv.Where(w => w.Tags == filter.Tags);
+                    var tagList = new List<string>();
+                    var match = false;
+
+                    foreach (var tag in filter.Tags)
+                    {
+                        tagList.Add(tag.text);
+                    }
+
+                    foreach (var wine in rv.ToList())
+                    {
+                        var wineTagArray = wine.Tags.Split(' ');
+
+                        foreach (var wineTag in wineTagArray)
+                        {
+                            foreach (var tag in tagList)
+                            {
+                                if (tag == wineTag)
+                                {
+                                    match = true;
+                                }
+                            }
+                        }
+
+                        if (match == false)
+                        {
+                            rv.Remove(wine);
+                        }
+
+                        match = false;
+                    }
                 }
                 //Rating
                 if (filter.Rating != null && !(filter.Rating.MinRating == 1 && filter.Rating.MaxRating == 10))
                 {
                     rv = rv.Where(w => w.Rating <= filter.Rating.MaxRating
-                                    && w.Rating >= filter.Rating.MinRating);
+                                    && w.Rating >= filter.Rating.MinRating).ToList();
                 }
                 //Format
                 if (filter.Format != null && filter.Format.Count != 0)
                 {
+                    var formatList = new List<string>();
                     foreach (var item in filter.Format)
                     {
-                        if (item != string.Empty)
-                        {
-                            foreach (var wine in rv.Where(w => w.Format == item))
-                            {
-                                if (!nrv.Contains(wine))
-                                {
-                                    nrv.Add(wine);
-                                }
-                            }
-                        }
+                        formatList.Add(item);
                     }
-                }
-                else
-                {
-                    foreach (var wine in rv)
+                    foreach (var wine in rv.ToList())
                     {
-                        if (!nrv.Contains(wine))
+                        if (!formatList.Contains(wine.Format))
                         {
-                            nrv.Add(wine);
+                            rv.Remove(wine);
                         }
                     }
                 }
 
-                return nrv.Count;
+                //paginate the filtered Wines
+                return rv.Where(w => w.UserID == userID).Count();
+
             }
             else
             {
-                return Database.Wines
+                var list = Database.Wines
                        .Where(w => w.Vineyard.Contains(search)
                                 || w.GrapeType.Contains(search)
                                 || w.Year.ToString().Contains(search))
-                       .ToList<Wine>()
-                       .Count;
+                       .ToList();
+
+                return list.Where(w => w.UserID == userID).Count();
             }
         }
          
@@ -342,7 +452,7 @@ namespace WineRoomAPI.Services
         {
             var wine = Database.Wines.First(w => w.ID == id);
 
-            return wine;
+            return ConvertWineTagsToJson(wine);
         }
 
         public void DeleteWine(int id)
@@ -388,7 +498,7 @@ namespace WineRoomAPI.Services
                                 
         }
 
-        public void EditWine(int id, Wine wine, string tagList)
+        public void EditWine(int id, PutWine wine, string tagList)
         {
             Wine editWine = Database.Wines.First(f => f.ID == id);
 

@@ -232,6 +232,10 @@
     <Compile Include="Models\JsonReturnModels\JsonUserGet.cs" />
     <Compile Include="Models\JsonReturnModels\JsonWineCrud.cs" />
     <Compile Include="Models\JsonReturnModels\JsonWineGet.cs" />
+    <Compile Include="Models\PutDrankWine.cs" />
+    <Compile Include="Models\PutPeople.cs" />
+    <Compile Include="Models\PutTags.cs" />
+    <Compile Include="Models\PutWine.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Wine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -7,6 +7,9 @@ using WineRoomAPI.Models;
 using System.Linq.Dynamic;
 using WineRoomAPI.Models.JsonReturnModels;
 using System.Data.Entity;
+using System.Net.Http;
+using System.Web.Http;
+using Newtonsoft.Json;
 
 namespace WineRoomAPI.Services.DrankWineServices
 {
@@ -14,9 +17,9 @@ namespace WineRoomAPI.Services.DrankWineServices
     {
         public WineroomContext Database { get; } = new WineroomContext();
 
-        public List<DrankWine> GetDrankWines(int pageIndex, int pageSize, string search)
+        public List<DrankWine> GetDrankWines(int userID, int pageIndex, int pageSize, string search)
         {
-            return Database.DrankWines
+            var rv = Database.DrankWines
                 .Include(i => i.Wine)
                 .Where(w => w.People.Contains(search)
                          || w.Location.Contains(search)
@@ -28,6 +31,33 @@ namespace WineRoomAPI.Services.DrankWineServices
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
+
+            var putPeopleList = new List<PutPeople>();
+            foreach (var drankWine in rv.ToList())
+            {
+                if (drankWine.People != null)
+                {
+                    var peopleArray = drankWine.People.Split(' ');
+
+                    for (int i = 0; i < peopleArray.Length; i++)
+                    {
+                        var person = peopleArray[i];
+
+                        if (person != "")
+                        {
+                            var putPerson = new PutPeople();
+                            putPerson.text = person;
+                            putPeopleList.Add(putPerson);
+                        }
+                    }
+
+                    drankWine.People = JsonConvert.SerializeObject(putPeopleList);
+                }
+
+                putPeopleList = new List<PutPeople>();
+            }
+
+            return rv.Where(w => w.Wine.UserID == userID).ToList();
         }
 
         public JsonDrankWineGet JsonDrankWineGet(List<DrankWine> drankWineList, int pageIndex, int pageSize)
@@ -69,14 +99,15 @@ namespace WineRoomAPI.Services.DrankWineServices
             Database.SaveChanges();
         }
 
-        public void EditDrankWine(int id, DrankWine drankWine)
+        [HttpPut]
+        public void EditDrankWine(int id, PutDrankWine putDrankWine, string people)
         {
             DrankWine editDrankWine = Database.DrankWines.First(f => f.ID == id);
 
-            editDrankWine.DateDrank = drankWine.DateDrank;
-            editDrankWine.People = drankWine.People;
-            editDrankWine.Location = drankWine.Location;
-            editDrankWine.Comments = drankWine.Comments;
+            editDrankWine.DateDrank = putDrankWine.DateDrank;
+            editDrankWine.People = people;
+            editDrankWine.Location = putDrankWine.Location;
+            editDrankWine.Comments = putDrankWine.Comments;
 
             Database.SaveChanges();
         }

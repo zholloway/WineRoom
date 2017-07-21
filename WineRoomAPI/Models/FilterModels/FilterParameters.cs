@@ -16,7 +16,7 @@ namespace WineRoomAPI.Services
         public bool? Favorite { get; set; }
         public List<string> Region { get; set; }
         public List<string> Color { get; set; }
-        public string Tags { get; set; }
+        public List<PutTags> Tags { get; set; }
         public Rating Rating { get; set; }
         public List<string> Format { get; set; }
     }

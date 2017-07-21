@@ -12,9 +12,21 @@ namespace WineRoomAPI.Services
     {
         public WineroomContext Database { get; } = new WineroomContext();
 
-        public List<User> GetUsers()
+        public bool CheckForUser(User user)
         {
-            return Database.Users.OrderBy(o => o.Username).ToList();
+            if (Database.Users.Where(w => w.Password == user.Password && w.Username == user.Username).Count() == 1) return true;
+
+            return false;
+        }
+
+        public User FindUser(User user)
+        {
+            return Database.Users.First(w => w.Password == user.Password && w.Username == user.Username);
+        }
+
+        public List<User> GetUser()
+        {
+            return Database.Users.ToList();
         }
 
         public JsonUserGet JsonUserGet(List<User> userList)

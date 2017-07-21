@@ -33,7 +33,7 @@ namespace WineRoomAPI.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult Get(FilterParameters filter, int pageIndex = 1, int pageSize = 10, string sortBy = "ID", string search = "")
+        public IHttpActionResult Get(int userID, FilterParameters filter, int pageIndex = 1, int pageSize = 10, string sortBy = "ID", string search = "")
         {
             var request = Request.RequestUri;
             var uri = new Uri(request.AbsoluteUri);
@@ -45,8 +45,8 @@ namespace WineRoomAPI.Controllers
                 jObj = JsonConvert.DeserializeObject<FilterParameters>(filters);
             }          
             
-            var list = wineServices.GetAllWine(pageIndex, pageSize, sortBy, search, jObj);
-            var count = wineServices.GetWineCount(search, jObj);
+            var list = wineServices.GetAllWine(pageIndex, pageSize, sortBy, search, userID, jObj);
+            var count = wineServices.GetWineCount(userID, search, jObj);
             return Ok(wineServices.JsonGetReturn(list, pageIndex, pageSize, count));
         }
 
@@ -78,25 +78,20 @@ namespace WineRoomAPI.Controllers
 
         //update wine
         [HttpPut]
-        public IHttpActionResult Edit(int id, Wine wine)
+        public IHttpActionResult Edit()
         {
-            var request = Request.RequestUri;
-            var uri = new Uri(request.AbsoluteUri);
-            var query = uri.ParseQueryString();
-            var tags = query.Get("Tags");
-            var jObj = new List<string>();
-            if (tags != null)
+            HttpContent requestContent = Request.Content;
+            string jsonContent = requestContent.ReadAsStringAsync().Result;
+            PutWine putWine = JsonConvert.DeserializeObject<PutWine>(jsonContent);
+            string tags = string.Empty;
+            foreach (var tag in putWine.Tags)
             {
-                jObj = JsonConvert.DeserializeObject<List<string>>(tags);
-            }
-            var tagList = string.Empty;
-            foreach(var item in jObj)
-            {
-                tagList += $"{item},";
+                tags += $"{tag.text} ";
             }
 
-            wineServices.EditWine(id, wine, tagList);
-            return Ok(wineServices.JsonCrudReturn(id));
+            wineServices.EditWine(putWine.ID, putWine, tags);
+
+            return Ok(wineServices.JsonCrudReturn(putWine.ID));
         }
 
         //delete wine

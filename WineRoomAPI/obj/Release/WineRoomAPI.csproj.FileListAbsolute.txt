@@ -171,3 +171,4 @@ C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\W
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\obj\Release\WineRoomAPI.dll
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\obj\Release\WineRoomAPI.pdb
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\obj\Release\WineRoomAPI.Migrations.RatingaddedtoWinesmodel.resources
+C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\obj\Release\WineRoomAPI.Migrations.RatingaddedtoWinesmodel.resources

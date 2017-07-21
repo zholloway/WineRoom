@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -24,22 +25,22 @@ namespace WineRoomAPI.Controllers
         [HttpGet]
         public IHttpActionResult Get()
         {
-            return Ok(userServices.JsonUserGet(userServices.GetUsers()));
+            return Ok(userServices.JsonUserGet(userServices.GetUser()));
         }
 
         [HttpPost]
-        public IHttpActionResult EditDrankWine(int id, User user)
+        public IHttpActionResult CheckUser()
         {
-            userServices.EditUser(id, user);
-            return Ok(userServices.JsonUserReturn(id));
-        }
+            HttpContent requestContent = Request.Content;
+            string jsonContent = requestContent.ReadAsStringAsync().Result;
+            User user = JsonConvert.DeserializeObject<User>(jsonContent);
 
-        [HttpPost]
-        public IHttpActionResult AddUser(User user)
-        {
-            userServices.AddUser(user);
-            var newUser = userServices.FindNewUser(user);
-            return Ok(userServices.JsonUserReturn(newUser.ID));
+            if (userServices.CheckForUser(user) == true)
+            {
+                return Ok(userServices.JsonUserReturn(userServices.FindUser(user).ID));
+            }
+
+            return Ok(userServices.JsonUserReturn(-1));
         }
 
         [HttpDelete]

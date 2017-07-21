@@ -171,3 +171,5 @@ C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\W
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\obj\Debug\WineRoomAPI.dll
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\obj\Debug\WineRoomAPI.pdb
 C:\Users\Zack Holloway\Documents\Visual Studio 2017\Projects\Wineroom\WineRoom\WineRoomAPI\obj\Debug\WineRoomAPI.csprojResolveAssemblyReference.cache
+C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\obj\Debug\WineRoomAPI.Migrations.RatingaddedtoWinesmodel.resources
+C:\Users\Zack Holloway\documents\visual studio 2017\Projects\WineRoomAPI\WineRoomAPI\obj\Debug\WineRoomAPI.Migrations.useridfordwines.resources

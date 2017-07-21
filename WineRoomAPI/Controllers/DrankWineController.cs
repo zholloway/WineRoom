@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -25,19 +26,28 @@ namespace WineRoomAPI.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult Get(int pageIndex = 1, int pageSize = 10, string search = "")
+        public IHttpActionResult Get(int userID, int pageIndex = 1, int pageSize = 10, string search = "")
         {   
-            List<DrankWine> drankWines = drankWineServices.GetDrankWines(pageIndex, pageSize, search);
+            List<DrankWine> drankWines = drankWineServices.GetDrankWines(userID, pageIndex, pageSize, search);
             List<DrankWine> drunkWines = db.DrankWines.ToList();
 
             return Ok(drankWineServices.JsonDrankWineGet(drankWines, pageIndex, pageSize));
         }
 
         [HttpPut]
-        public IHttpActionResult EditDrankWine(int id, DrankWine drankWine)
+        public IHttpActionResult EditDrankWine()
         {
-            drankWineServices.EditDrankWine(id, drankWine);
-            return Ok(drankWineServices.JsonDrankWineReturn(id));
+            HttpContent requestContent = Request.Content;
+            string jsonContent = requestContent.ReadAsStringAsync().Result;
+            PutDrankWine putDrankWine = JsonConvert.DeserializeObject<PutDrankWine>(jsonContent);
+            string people = string.Empty;
+            foreach (var person in putDrankWine.People)
+            {
+                people += $"{person.text} ";
+            }
+
+            drankWineServices.EditDrankWine(putDrankWine.ID, putDrankWine, people);
+            return Ok(drankWineServices.JsonDrankWineReturn(putDrankWine.ID));
         } 
 
         [HttpPost]
