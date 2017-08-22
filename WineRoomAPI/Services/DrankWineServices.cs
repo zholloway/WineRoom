@@ -16,10 +16,11 @@ namespace WineRoomAPI.Services.DrankWineServices
     public class DrankWineServices
     {
         public WineroomContext Database { get; } = new WineroomContext();
+        public WineServices wineServices = new WineServices();
 
         public List<DrankWine> GetDrankWines(int userID, int pageIndex, int pageSize, string search)
         {
-            var rv = Database.DrankWines
+            var query = Database.DrankWines
                 .Include(i => i.Wine)
                 .Where(w => w.People.Contains(search)
                          || w.Location.Contains(search)
@@ -27,37 +28,42 @@ namespace WineRoomAPI.Services.DrankWineServices
                          || w.Wine.Year.ToString().Contains(search)
                          || w.Wine.GrapeType.Contains(search)
                        )
-                .OrderByDescending(o => o.DateDrank)
-                .Skip((pageIndex - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
+                .OrderByDescending(o => o.DateDrank);
 
-            var putPeopleList = new List<PutPeople>();
-            foreach (var drankWine in rv.ToList())
+            var rv = query.Where(r => r.Wine.UserID == userID).ToList();
+            //var putPeopleList = new List<PutPeople>();
+            //foreach (var drankWine in rv.ToList())
+            //{
+            //    if (drankWine.People != null)
+            //    {
+            //        var peopleArray = drankWine.People.Split(' ');
+
+            //        for (int i = 0; i < peopleArray.Length; i++)
+            //        {
+            //            var person = peopleArray[i];
+
+            //            if (person != "")
+            //            {
+            //                var putPerson = new PutPeople();
+            //                putPerson.text = person;
+            //                putPeopleList.Add(putPerson);
+            //            }
+            //        }
+
+            //        drankWine.People = JsonConvert.SerializeObject(putPeopleList);
+            //    }
+
+            //    putPeopleList = new List<PutPeople>();
+            //}
+
+            for (int i = 0; i < rv.Count; i++)
             {
-                if (drankWine.People != null)
-                {
-                    var peopleArray = drankWine.People.Split(' ');
-
-                    for (int i = 0; i < peopleArray.Length; i++)
-                    {
-                        var person = peopleArray[i];
-
-                        if (person != "")
-                        {
-                            var putPerson = new PutPeople();
-                            putPerson.text = person;
-                            putPeopleList.Add(putPerson);
-                        }
-                    }
-
-                    drankWine.People = JsonConvert.SerializeObject(putPeopleList);
-                }
-
-                putPeopleList = new List<PutPeople>();
+                if (rv[i].Wine.Tags != "" || rv[i].Wine.Tags != null)
+                    rv[i].Wine = wineServices.ConvertWineTagsToJson(rv[i].Wine);
             }
 
-            return rv.Where(w => w.Wine.UserID == userID).ToList();
+            return rv.Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize).ToList();
         }
 
         public JsonDrankWineGet JsonDrankWineGet(List<DrankWine> drankWineList, int pageIndex, int pageSize)
@@ -99,15 +105,27 @@ namespace WineRoomAPI.Services.DrankWineServices
             Database.SaveChanges();
         }
 
-        [HttpPut]
-        public void EditDrankWine(int id, PutDrankWine putDrankWine, string people)
+        public void EditDrankWine(int id, PutDrankWine putDrankWine)
         {
             DrankWine editDrankWine = Database.DrankWines.First(f => f.ID == id);
 
             editDrankWine.DateDrank = putDrankWine.DateDrank;
-            editDrankWine.People = people;
+            editDrankWine.People = putDrankWine.People;
             editDrankWine.Location = putDrankWine.Location;
             editDrankWine.Comments = putDrankWine.Comments;
+
+            //edit the associated Wine for tags/rating
+            var originalWine = Database.Wines.FirstOrDefault(f => f.ID == putDrankWine.Wine.ID);
+            //edit the tags
+            if (putDrankWine.Wine.Tags != null)
+            {
+                originalWine.Tags = putDrankWine.Wine.Tags;
+            }
+            //edit the rating
+            if (putDrankWine.Wine.Rating != null)
+            {
+                originalWine.Rating = putDrankWine.Wine.Rating;
+            }
 
             Database.SaveChanges();
         }

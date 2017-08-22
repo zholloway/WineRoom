@@ -29,24 +29,27 @@ namespace WineRoomAPI.Controllers
         public IHttpActionResult Get(int userID, int pageIndex = 1, int pageSize = 10, string search = "")
         {   
             List<DrankWine> drankWines = drankWineServices.GetDrankWines(userID, pageIndex, pageSize, search);
-            List<DrankWine> drunkWines = db.DrankWines.ToList();
 
             return Ok(drankWineServices.JsonDrankWineGet(drankWines, pageIndex, pageSize));
         }
-
         [HttpPut]
-        public IHttpActionResult EditDrankWine()
+        public IHttpActionResult EditDrankWine([FromUri]int ID)
         {
+            var id = ID;
+
             HttpContent requestContent = Request.Content;
             string jsonContent = requestContent.ReadAsStringAsync().Result;
             PutDrankWine putDrankWine = JsonConvert.DeserializeObject<PutDrankWine>(jsonContent);
-            string people = string.Empty;
-            foreach (var person in putDrankWine.People)
-            {
-                people += $"{person.text} ";
-            }
+            //string people = string.Empty;
 
-            drankWineServices.EditDrankWine(putDrankWine.ID, putDrankWine, people);
+            ////convert list of people to single string for db storage
+            //foreach (var person in putDrankWine.People)
+            //{
+            //    people += $"{person.text} ";
+            //}
+
+            drankWineServices.EditDrankWine(id, putDrankWine);
+
             return Ok(drankWineServices.JsonDrankWineReturn(putDrankWine.ID));
         } 
 

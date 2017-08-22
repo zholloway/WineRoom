@@ -220,6 +220,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DrankWine.cs" />
+    <Compile Include="Models\DrankwineReturnData.cs" />
     <Compile Include="Models\FilterModels\DrinkableEnd.cs" />
     <Compile Include="Models\FilterModels\DrinkableStart.cs" />
     <Compile Include="Models\FilterModels\PurchasePrice.cs" />

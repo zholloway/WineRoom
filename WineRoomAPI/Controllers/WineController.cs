@@ -43,11 +43,12 @@ namespace WineRoomAPI.Controllers
             if(filters != null)
             {
                 jObj = JsonConvert.DeserializeObject<FilterParameters>(filters);
-            }          
-            
+            }
+
             var list = wineServices.GetAllWine(pageIndex, pageSize, sortBy, search, userID, jObj);
+            var orderedList = list.OrderByDescending(w => w.ID).ToList();
             var count = wineServices.GetWineCount(userID, search, jObj);
-            return Ok(wineServices.JsonGetReturn(list, pageIndex, pageSize, count));
+            return Ok(wineServices.JsonGetReturn(orderedList, pageIndex, pageSize, count));
         }
 
         //create wine

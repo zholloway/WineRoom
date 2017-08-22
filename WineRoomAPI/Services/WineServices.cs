@@ -118,7 +118,7 @@ namespace WineRoomAPI.Services
                     }
                 }
                 //Tags
-                if (filter.Tags != null)
+                if (filter.Tags != null && filter.Tags.Count != 0)
                 {
                     var tagList = new List<string>();
                     var match = false;
@@ -130,18 +130,21 @@ namespace WineRoomAPI.Services
 
                     foreach (var wine in rv.ToList())
                     {
-                        var wineTagArray = wine.Tags.Split(' ');
-
-                        foreach (var wineTag in wineTagArray)
+                        if (wine.Tags != null)
                         {
-                            foreach (var tag in tagList)
+                            var wineTagArray = wine.Tags.Split(' ');
+
+                            foreach (var wineTag in wineTagArray)
                             {
-                                if (tag == wineTag)
+                                foreach (var tag in tagList)
                                 {
-                                    match = true;
+                                    if (tag == wineTag)
+                                    {
+                                        match = true;
+                                    }
                                 }
                             }
-                        }
+                        }       
 
                         if (match == false)
                         {
@@ -174,16 +177,29 @@ namespace WineRoomAPI.Services
                     }
                 }
 
-                //paginate the filtered Wines
-                return ConvertWineListTagsToJson(rv.OrderBy(sortBy)
+                if (sortBy != "ID")
+                {
+                    return ConvertWineListTagsToJson(rv.OrderBy(sortBy)
                     .Where(w => w.UserID == userID)
                     .Skip((pageIndex - 1) * pageSize)
                     .Take(pageSize)
                     .ToList());
+                } else
+                {
+                    return ConvertWineListTagsToJson(rv.OrderByDescending(w => w.ID)
+                    .Where(w => w.UserID == userID)
+                    .Skip((pageIndex - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList());
+                }
 
             } else
             {
-                var rv = Database.Wines
+                var rv = new List<Wine>();
+
+                if (sortBy != "ID")
+                {
+                    rv = Database.Wines
                        .Where(w => w.Vineyard.Contains(search)
                                 || w.GrapeType.Contains(search)
                                 || w.Year.ToString().Contains(search))
@@ -191,6 +207,18 @@ namespace WineRoomAPI.Services
                        .Skip((pageIndex - 1) * pageSize)
                        .Take(pageSize)
                        .ToList<Wine>();
+                } else
+                {
+                    rv = Database.Wines
+                       .Where(w => w.Vineyard.Contains(search)
+                                || w.GrapeType.Contains(search)
+                                || w.Year.ToString().Contains(search))
+                       .OrderByDescending(w => w.ID)
+                       .Skip((pageIndex - 1) * pageSize)
+                       .Take(pageSize)
+                       .ToList<Wine>();
+                }
+                
 
                 return ConvertWineListTagsToJson(rv.Where(w => w.UserID == userID).ToList());
             }
@@ -375,19 +403,22 @@ namespace WineRoomAPI.Services
 
                     foreach (var wine in rv.ToList())
                     {
-                        var wineTagArray = wine.Tags.Split(' ');
-
-                        foreach (var wineTag in wineTagArray)
+                        if (wine.Tags != null)
                         {
-                            foreach (var tag in tagList)
+                            var wineTagArray = wine.Tags.Split(' ');
+
+                            foreach (var wineTag in wineTagArray)
                             {
-                                if (tag == wineTag)
+                                foreach (var tag in tagList)
                                 {
-                                    match = true;
+                                    if (tag == wineTag)
+                                    {
+                                        match = true;
+                                    }
                                 }
                             }
                         }
-
+                        
                         if (match == false)
                         {
                             rv.Remove(wine);
