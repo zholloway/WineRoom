@@ -56,11 +56,11 @@ namespace WineRoomAPI.Services.DrankWineServices
             //    putPeopleList = new List<PutPeople>();
             //}
 
-            for (int i = 0; i < rv.Count; i++)
-            {
-                if (rv[i].Wine.Tags != "" || rv[i].Wine.Tags != null)
-                    rv[i].Wine = wineServices.ConvertWineTagsToJson(rv[i].Wine);
-            }
+            //for (int i = 0; i < rv.Count; i++)
+            //{
+            //    if (rv[i].Wine.Tags != "" || rv[i].Wine.Tags != null)
+            //        rv[i].Wine = wineServices.ConvertWineTagsToJson(rv[i].Wine);
+            //}
 
             return rv.Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize).ToList();
